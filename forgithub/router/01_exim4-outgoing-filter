@@ -1,0 +1,13 @@
+check_outgoing_from_header:
+driver = redirect
+domains = ! +local_domains
+condition = ${if !match{$header_from:}{$sender_address}}
+allow_fail
+data = :fail: You can not send mail from here with From: $header_from as sender: $sender_address
+
+check_outgoing:
+driver = redirect
+domains = ! +local_domains
+senders = ! : ! *@lsearch;/etc/exim4/allowed.domains : ! \search;/etc/exim4/allowed.mails
+allow_fail
+data = :fail: You can not send mail from this mailbox from this server.

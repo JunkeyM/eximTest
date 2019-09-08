@@ -1,0 +1,51 @@
+
+### transport/30_exim4-config_remote_smtp_smarthost
+#################################
+
+# This transport is used for delivering messages over SMTP connections
+# to a smarthost. The local host tries to authenticate.
+# This transport is used for smarthost and satellite configurations.
+# Refuse to send any messsage with over-long lines, which could have
+# been received other than via SMTP. The use of message_size_limit to
+# enforce this is a red herring.
+
+remote_smtp_smarthost:
+  debug_print = "T: remote_smtp_smarthost for $local_part@$domain"
+  driver = smtp
+  multi_domain
+.ifndef IGNORE_SMTP_LINE_LENGTH_LIMIT
+  message_size_limit = ${if > {$max_received_linelength}{998} {1}{0}}
+.endif
+  hosts_try_auth = <; ${if exists{CONFDIR/passwd.client} \
+        {\
+        ${lookup{$host}nwildlsearch{CONFDIR/passwd.client}{$host_address}}\
+        }\
+        {} \
+        }
+.ifdef REMOTE_SMTP_SMARTHOST_HOSTS_AVOID_TLS
+  hosts_avoid_tls = REMOTE_SMTP_SMARTHOST_HOSTS_AVOID_TLS
+.endif
+.ifdef REMOTE_SMTP_SMARTHOST_HOSTS_REQUIRE_TLS
+  hosts_require_tls = smtp.yandex.ru
+.endif
+
+hosts_require_auth = smtp.yandex.ru
+
+.ifdef REMOTE_SMTP_HEADERS_REWRITE
+  headers_rewrite = *@+local_domains "${lookup{$local_part}lsearch{/etc/email-addresses}{$value}fail}" frs
+.endif
+.ifdef REMOTE_SMTP_RETURN_PATH
+  return_path = user@domain.com
+.endif
+.ifdef REMOTE_SMTP_HELO_DATA
+  helo_data=REMOTE_SMTP_HELO_DATA
+.endif
+.ifdef TLS_DH_MIN_BITS
+tls_dh_min_bits = TLS_DH_MIN_BITS
+.endif
+.ifdef REMOTE_SMTP_SMARTHOST_TLS_CERTIFICATE
+tls_certificate = TLS_CERTIFICATE
+.endif
+.ifdef REMOTE_SMTP_SMARTHOST_PRIVATEKEY
+tls_privatekey = TLS_PRIVATEKEY
+.endif

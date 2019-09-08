@@ -1,0 +1,18 @@
+
+######################################################################
+#                      ROUTERS CONFIGURATION                         #
+#               Specifies how addresses are handled                  #
+######################################################################
+#     THE ORDER IN WHICH THE ROUTERS ARE DEFINED IS IMPORTANT!       #
+# An address is passed to each router in turn until it is accepted.  #
+######################################################################
+
+begin routers
+
+#smarthost:
+#driver = manualroute
+#domains = ! +local_domains
+#transport = remote_smtp_smarthost
+#ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8
+#route_list = * smtp.yandex.ru::587 byname
+#no_more

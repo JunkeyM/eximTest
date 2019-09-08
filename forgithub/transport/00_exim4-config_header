@@ -1,0 +1,22 @@
+
+######################################################################
+#                      TRANSPORTS CONFIGURATION                      #
+######################################################################
+#                       ORDER DOES NOT MATTER                        #
+#     Only one appropriate transport is called for each delivery.    #
+######################################################################
+
+# A transport is used only when referenced from a router that successfully
+# handles an address.
+
+begin transports
+#remote_smtp_smarthost:
+#driver = smtp
+#message_size_limit = ${if > {$max_received_linelength}{998} {1}{0}}
+#hosts_require_auth = smtp.yandex.ru
+#hosts_require_tls = smtp.yandex.ru
+#tls_certificate = /etc/exim4/exim.crt
+#tls_privatekey = /etc/exim4/exim.key
+#tls_verify_certificates = directory/
+#return_path = user@domain.com
+#headers_rewrite = *@*+local_domains "${lookup{$local_part}lsearch{/etc/email-addresses}{$value}fail}" frs
